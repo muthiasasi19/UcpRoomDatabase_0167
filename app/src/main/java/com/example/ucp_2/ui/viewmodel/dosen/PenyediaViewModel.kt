@@ -25,12 +25,7 @@ object PenyediaViewModel {
                 kuliahApp().containerApp.RepositoryDosen
             )
         }
-        initializer {
-            DetailDosenViewModel(
-                createSavedStateHandle(),
-                kuliahApp().containerApp.RepositoryDosen
-            )
-        }
+
         initializer {
             MKViewModel(
                 kuliahApp().containerApp.RepositoryMataKuliah,
