@@ -88,5 +88,39 @@ fun PengelolaHalaman(
                 modifier = modifier,
             )
         }
-
+        composable(
+            DestinasiDetailMataKuliah.routesWithArg,
+            arguments = listOf(
+                navArgument(DestinasiDetailMataKuliah.KODE_MATAKULIAH) {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            val kode = it.arguments?.getString(DestinasiDetailMataKuliah.KODE_MATAKULIAH)
+            kode?.let { kode ->
+                DetailMataKuliahView(
+                    onBack = { navController.popBackStack() },
+                    onEditClick = { navController.navigate( "${DestinasiUpdateMataKuliah.route}/$it") },
+                    modifier = modifier,
+                    onDeleteClick = {
+                        navController.popBackStack()
+                    }
+                )
+            }
+        }
+        composable(
+            DestinasiUpdateMataKuliah.routesWithArg,
+            arguments = listOf(
+                navArgument(DestinasiUpdateMataKuliah.KODE_MATAKULIAH) {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            UpdateMataKuliahView(
+                onBack = { navController.popBackStack() },
+                onNavigate = { navController.popBackStack() },
+                modifier = modifier,
+            )
+        }
+    }
 }
