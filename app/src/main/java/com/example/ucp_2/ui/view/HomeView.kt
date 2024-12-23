@@ -38,7 +38,7 @@ fun HomeView(
             contentDescription = null,
             modifier = Modifier
                 .fillMaxSize()
-                .blur(radius = 2.dp),
+                .blur(radius = 5.dp),
             contentScale = ContentScale.Crop // Sesuaikan gambar agar mengisi seluruh layar
         )
 
@@ -50,16 +50,18 @@ fun HomeView(
                 .background(
                     color = Color(0xAA90CAF9), // Transparansi pada header
                     shape = RoundedCornerShape(bottomEnd = 50.dp) // Sudut kanan bawah melingkar
-                ),
-            contentAlignment = Alignment.Center // Teks berada di tengah
+                )
+                .padding(start = 16.dp, end = 16.dp),
+            contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "Univesrsitas Muhammadiyah Yogyakarta",
-                fontSize = 26.sp,
+                text = "Universitas Muhammadiyah Yogyakarta",
+                fontSize = 28.sp,
                 color = Color.White,
                 modifier = Modifier.fillMaxWidth().wrapContentWidth(Alignment.CenterHorizontally)
             )
         }
+
 
         // Kolom utama
         Column(
@@ -108,7 +110,8 @@ fun HomeView(
                     onClick = { onMataKuliahButton() },
                     modifier = Modifier
                         .padding(8.dp)
-                        .size(width = 140.dp, height = 80.dp)
+                        .size(width = 140.dp, height = 80.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.darkblue))
                 ) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
@@ -118,7 +121,7 @@ fun HomeView(
                             imageVector = Icons.Default.Menu, // Ikon untuk Mata Kuliah
                             contentDescription = null,
                             modifier = Modifier.size(24.dp),
-                            tint = Color.Black
+                            tint = Color.White
                         )
                         Text(text = "Mata Kuliah")
                     }
