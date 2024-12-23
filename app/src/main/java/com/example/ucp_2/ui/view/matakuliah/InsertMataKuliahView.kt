@@ -149,3 +149,139 @@ fun InsertBodyMataKuliah(
     }
 }
 
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun FormMataKuliah(
+    mataKuliahEvent: MataKuliahEvent = MataKuliahEvent(),
+    onValueChange: (MataKuliahEvent) -> Unit,
+    errorState: FormErrorState = FormErrorState(),
+    modifier: Modifier = Modifier,
+    dosenList: List<Dosen>
+) {
+    val semester = listOf("Ganjil", "Genap")
+    val jenis = listOf("Mata Kuliah Wajib", "Mata Kuliah Pilihan")
+
+    var expanded by remember { mutableStateOf(false) }
+    var chosenDropdown by remember { mutableStateOf("") }
+
+    Column(
+        modifier = modifier.fillMaxWidth()
+    ) {
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = mataKuliahEvent.nama,
+            onValueChange = {
+                onValueChange(mataKuliahEvent.copy(nama = it))
+            },
+            label = { Text("Nama") },
+            isError = errorState.nama != null,
+            placeholder = { Text("Masukkan Nama") },
+        )
+        Text(text = errorState.nama ?: "", color = Color.Red)
+
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = mataKuliahEvent.kode, onValueChange = {
+                onValueChange(mataKuliahEvent.copy(kode = it))
+            },
+            label = { Text("Kode") },
+            isError = errorState.kode != null,
+            placeholder = { Text("Masukkan Kode") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+        )
+        Text(text = errorState.kode ?: "", color = Color.Red)
+
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(text = "Semester")
+        Row(modifier = Modifier.fillMaxWidth()) {
+            semester.forEach { sr ->
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Start
+                ) {
+                    RadioButton(
+                        selected = mataKuliahEvent.semester == sr,
+                        onClick = { onValueChange(mataKuliahEvent.copy(semester = sr)) }
+                    )
+                    Text(text = sr)
+                }
+            }
+        }
+        Text(text = errorState.semester ?: "", color = Color.Red)
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = mataKuliahEvent.sks,
+            onValueChange = {
+                onValueChange(mataKuliahEvent.copy(sks = it))
+            },
+            label = { Text("Sks") },
+            isError = errorState.sks != null,
+            placeholder = { Text("Masukkan Sks") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+        )
+        Text(text = errorState.sks ?: "", color = Color.Red)
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(text = "Jenis")
+        Row {
+            jenis.forEach { jenis ->
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Start
+                ) {
+                    RadioButton(
+                        selected = mataKuliahEvent.jenis == jenis,
+                        onClick = {
+                            onValueChange(mataKuliahEvent.copy(jenis = jenis))
+                        },
+
+                        )
+                    Text(
+                        text = jenis,
+                    )
+                }
+            }
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+
+
+        ExposedDropdownMenuBox(
+            expanded = expanded,
+            onExpandedChange = { expanded = !expanded }
+        ) {
+            OutlinedTextField(
+                value = chosenDropdown,
+                onValueChange = { },
+                label = { Text("Pilih Dosen Pengampu") },
+                trailingIcon = {
+                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                },
+                modifier = Modifier.menuAnchor().fillMaxWidth(),
+                readOnly = true,
+                isError = errorState.dosenPengampu != null
+            )
+
+            ExposedDropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                dosenList.forEach { dosen ->
+                    DropdownMenuItem(
+                        onClick = {
+                            chosenDropdown = dosen.nama
+                            expanded = false
+                            onValueChange(mataKuliahEvent.copy(dosenPengampu = dosen.nama))
+                        },
+                        text = { Text(text = dosen.nama) }
+                    )
+                }
+            }
+        }
+        Text(text = errorState.dosenPengampu ?: "", color = Color.Red)
+    }
+}
