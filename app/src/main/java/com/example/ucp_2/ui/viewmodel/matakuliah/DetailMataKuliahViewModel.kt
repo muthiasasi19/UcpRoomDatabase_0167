@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ucp_2.data.entity.MataKuliah
 import com.example.ucp_2.repository.matakuliah.RepositoryMataKuliah
+import com.example.ucp_2.ui.Navigasi.DestinasiDetailDosen.kodeDosen
 import com.example.ucp_2.ui.Navigasi.DestinasiDetailMataKuliah
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
@@ -16,11 +17,11 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class DetailMataKuliahViewModel(
+class DetailMKViewModel(
     savedStateHandle: SavedStateHandle,   // Menyimpan data yang terkait dengan lifecycle (digunakan untuk mempertahankan state ViewModel)
     private val RepositoryMataKuliah: RepositoryMataKuliah,
 ) : ViewModel(){
-    private val _kode: String = checkNotNull(savedStateHandle[DestinasiDetailMataKuliah.KODE_MATAKULIAH])
+    private val _kode: String = checkNotNull(savedStateHandle[kodeDosen])
 
     val detailUiState: StateFlow<DetailUiState> = RepositoryMataKuliah.getDetailMataKuliah(_kode)
         .filterNotNull()

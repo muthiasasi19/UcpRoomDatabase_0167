@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-class UpdateMataKuliahViewModel(
+class UpdateMKViewModel(
     savedStateHandle: SavedStateHandle,
     private val repositoryMataKuliah: LocalRepositoryMk,
     private val repossioryDsn: RepositoryDosen
@@ -27,7 +27,7 @@ class UpdateMataKuliahViewModel(
     var updateUiState by mutableStateOf(MataKuliahUiState())
         private set
 
-    private val _kode: String = checkNotNull(savedStateHandle[DestinasiUpdateMataKuliah.KODE_MATAKULIAH])
+    private val _kode: String = checkNotNull(savedStateHandle[DestinasiUpdateMataKuliah.kodeMatakuliah])
 
     init {
         viewModelScope.launch {

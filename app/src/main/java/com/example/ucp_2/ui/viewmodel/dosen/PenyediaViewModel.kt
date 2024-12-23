@@ -5,59 +5,59 @@ import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.ucp_2.KrsApp
+import com.example.ucp_2.KuliahApp
 import com.example.ucp_2.repository.dosen.LocalRepositoryDsn
 import com.example.ucp_2.repository.matakuliah.LocalRepositoryMk
-import com.example.ucp_2.ui.viewmodel.matakuliah.DetailMataKuliahViewModel
-import com.example.ucp_2.ui.viewmodel.matakuliah.HomeMataKuliahViewModel
-import com.example.ucp_2.ui.viewmodel.matakuliah.MataKuliahViewModel
-import com.example.ucp_2.ui.viewmodel.matakuliah.UpdateMataKuliahViewModel
+import com.example.ucp_2.ui.viewmodel.matakuliah.DetailMKViewModel
+import com.example.ucp_2.ui.viewmodel.matakuliah.HomeMKViewModel
+import com.example.ucp_2.ui.viewmodel.matakuliah.MKViewModel
+import com.example.ucp_2.ui.viewmodel.matakuliah.UpdateMKViewModel
 
 object PenyediaViewModel {
     val Factory = viewModelFactory {
         initializer {
             DosenViewModel(
-                krsApp().containerApp.RepositoryDosen as LocalRepositoryDsn
+                kuliahApp().containerApp.RepositoryDosen as LocalRepositoryDsn
             )
         }
         initializer {
             HomeDosenViewModel(
-                krsApp().containerApp.RepositoryDosen
+                kuliahApp().containerApp.RepositoryDosen
             )
         }
         initializer {
             DetailDosenViewModel(
                 createSavedStateHandle(),
-                krsApp().containerApp.RepositoryDosen
+                kuliahApp().containerApp.RepositoryDosen
             )
         }
         initializer {
-            MataKuliahViewModel(
-                krsApp().containerApp.RepositoryMataKuliah,
-                krsApp().containerApp.RepositoryDosen
+            MKViewModel(
+                kuliahApp().containerApp.RepositoryMataKuliah,
+                kuliahApp().containerApp.RepositoryDosen
             )
         }
         initializer {
-            HomeMataKuliahViewModel(
-                krsApp().containerApp.RepositoryMataKuliah,
+            HomeMKViewModel(
+                kuliahApp().containerApp.RepositoryMataKuliah,
             )
         }
         initializer {
-            DetailMataKuliahViewModel(
+            DetailMKViewModel(
                 createSavedStateHandle(),
-                krsApp().containerApp.RepositoryMataKuliah,
+                kuliahApp().containerApp.RepositoryMataKuliah,
             )
         }
         initializer {
-            UpdateMataKuliahViewModel(
+            UpdateMKViewModel(
                 createSavedStateHandle(),
-                krsApp().containerApp.RepositoryMataKuliah as LocalRepositoryMk,
-                krsApp().containerApp.RepositoryDosen as LocalRepositoryDsn,
+                kuliahApp().containerApp.RepositoryMataKuliah as LocalRepositoryMk,
+                kuliahApp().containerApp.RepositoryDosen as LocalRepositoryDsn,
             )
         }
     }
 }
 
 
-fun CreationExtras.krsApp() : KrsApp =
-    (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as KrsApp)
+fun CreationExtras.kuliahApp() : KuliahApp =
+    (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as KuliahApp)

@@ -11,7 +11,7 @@ import com.example.ucp_2.repository.dosen.RepositoryDosen
 import com.example.ucp_2.repository.matakuliah.RepositoryMataKuliah
 import kotlinx.coroutines.launch
 
-class MataKuliahViewModel(
+class MKViewModel(
     private val repositoryMataKuliah: RepositoryMataKuliah, // Inisialisasi repository untuk berinteraksi dengan data MataKuliah
     private val repositoryDosen: RepositoryDosen // Inisialisasi repository untuk berinteraksi dengan data Dosen
 
@@ -24,7 +24,7 @@ class MataKuliahViewModel(
     init {
         viewModelScope.launch { // Melakukan operasi asynchronous menggunakan viewModelScope
             repositoryDosen.getAllDosen().collect {dosentList ->
-                this@MataKuliahViewModel.dosentList = dosentList
+                this@MKViewModel.dosentList = dosentList
                 updateUiState()
             }
         }

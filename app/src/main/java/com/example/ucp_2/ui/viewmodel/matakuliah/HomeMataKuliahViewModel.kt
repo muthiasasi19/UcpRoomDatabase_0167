@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 
-class HomeMataKuliahViewModel(
+class HomeMKViewModel(
     private val repositoryMataKuliah: RepositoryMataKuliah
 ) : ViewModel() {
     val homeUiState: StateFlow<HomeUiState> = repositoryMataKuliah.getAllMataKuliah()

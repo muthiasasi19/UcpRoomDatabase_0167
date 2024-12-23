@@ -22,7 +22,7 @@ class DetailDosenViewModel(
     private val repositoryDosen: RepositoryDosen,
 ) : ViewModel(){
 
-    private val _nidn: String = checkNotNull(savedStateHandle[DestinasiDetailDosen.KODE_DOSEN])
+    private val _nidn: String = checkNotNull(savedStateHandle[DestinasiDetailDosen.kodeDosen])
 
     val detailUiState: StateFlow<DetailUiState> = repositoryDosen.getDosen(_nidn)
         .filterNotNull()

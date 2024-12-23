@@ -38,14 +38,14 @@ import com.example.ucp_2.R
 import com.example.ucp_2.data.entity.MataKuliah
 import com.example.ucp_2.ui.customwidget.CustomTopAppBar
 import com.example.ucp_2.ui.viewmodel.dosen.PenyediaViewModel
-import com.example.ucp_2.ui.viewmodel.matakuliah.DetailMataKuliahViewModel
+import com.example.ucp_2.ui.viewmodel.matakuliah.DetailMKViewModel
 import com.example.ucp_2.ui.viewmodel.matakuliah.DetailUiState
 
 
 @Composable
-fun DetailMataKuliahView( // Fungsi utama untuk menampilkan detail mata kuliah
+fun DetailMKView( // Fungsi utama untuk menampilkan detail mata kuliah
     modifier: Modifier,
-    ViewModel: DetailMataKuliahViewModel = viewModel(factory = PenyediaViewModel.Factory),
+    ViewModel: DetailMKViewModel = viewModel(factory = PenyediaViewModel.Factory),
     onBack: () -> Unit = { },
     onEditClick: (String) -> Unit = { },
     onDeleteClick: (String) -> Unit = { },

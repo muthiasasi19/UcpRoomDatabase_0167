@@ -9,27 +9,27 @@ object HomeRoute : AlamatNavigasi{
 }
 // mendefinisikan rute untuk halaman dosen
 object DestinasiHomeDosen : AlamatNavigasi {
-    override val route = "home_dosen"
+    override val route = "homeDosen"
 }
 //mendefinisikan rute untuk halaman detail dosen
 object DestinasiDetailDosen : AlamatNavigasi {
-    override val route = "detail_dosen"
-    const val KODE_DOSEN = "kode_dosen"
-    val routesWithArg = "$route/{$KODE_DOSEN}"
+    override val route = "detailDosen"
+    const val kodeDosen = "kode_dosen"
+    val routesWithArg = "$route/{$kodeDosen}"
 }
 //mendefinisikan rute untuk halaman mata kuliah
 object DestinasiHomeMataKuliah : AlamatNavigasi {
-    override val route = "home_matakuliah"
+    override val route = "homeMatakuliah"
 }
 //mendefinisikan rute untuk halaman detail mata kuliah
 object DestinasiDetailMataKuliah : AlamatNavigasi {
-    override val route = "detail_matakuliah"
-    const val KODE_MATAKULIAH = "kode_matakuliah"
-    val routesWithArg = "$route/{$KODE_MATAKULIAH}"
+    override val route = "detailMatakuliah"
+    const val kodeMatakuliah = "kode_matakuliah"
+    val routesWithArg = "$route/{$kodeMatakuliah}"
 }
 
 object DestinasiUpdateMataKuliah : AlamatNavigasi {
-    override val route = "update_matakuliah"
-    const val KODE_MATAKULIAH = "kode_matakuliah"
-    val routesWithArg = "$route/{$KODE_MATAKULIAH}"
+    override val route = "updateMatakuliah"
+    const val kodeMatakuliah = "kode_matakuliah"
+    val routesWithArg = "$route/{$kodeMatakuliah}"
 }
