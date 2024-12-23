@@ -15,8 +15,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -211,7 +213,7 @@ fun CardMk(
                 verticalAlignment = Alignment.CenterVertically
 
             ) {
-                Icon(imageVector = Icons.Filled.DateRange, contentDescription = "")
+                Icon(imageVector = Icons.Filled.Info, contentDescription = "")
                 Spacer(modifier = Modifier.padding(4.dp))
                 Text(
                     text = mk.kode,
@@ -223,7 +225,7 @@ fun CardMk(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(imageVector = Icons.Filled.Home, contentDescription = "")
+                Icon(imageVector = Icons.Filled.Check, contentDescription = "")
                 Spacer(modifier = Modifier.padding(4.dp))
                 Text(
                     text = mk.semester,

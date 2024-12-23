@@ -20,10 +20,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -43,14 +46,26 @@ import com.example.ucp_2.ui.viewmodel.matakuliah.DetailUiState
 
 
 @Composable
-fun DetailMKView( // Fungsi utama untuk menampilkan detail mata kuliah
+fun DetailMKView(
     modifier: Modifier,
     ViewModel: DetailMKViewModel = viewModel(factory = PenyediaViewModel.Factory),
     onBack: () -> Unit = { },
     onEditClick: (String) -> Unit = { },
-    onDeleteClick: (String) -> Unit = { },
-){
-    Scaffold (
+    onDeleteClick: () -> Boolean,
+) {
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    // Observasi perubahan pada UI state
+    val detailUiState by ViewModel.detailUiState.collectAsState()
+
+    LaunchedEffect(detailUiState) {
+        if (detailUiState.isDeleted) {
+            snackbarHostState.showSnackbar("Data berhasil dihapus")
+            onBack() // Navigasi kembali setelah penghapusan berhasil
+        }
+    }
+
+    Scaffold(
         topBar = {
             CustomTopAppBar(
                 judul = "Detail Mata Kuliah",
@@ -62,25 +77,22 @@ fun DetailMKView( // Fungsi utama untuk menampilkan detail mata kuliah
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    onEditClick(ViewModel.detailUiState.value.detailUiEvent.kode)
+                    onEditClick(detailUiState.detailUiEvent.kode)
                 },
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier.padding(16.dp)
             ) {
                 Icon(
-                    imageVector = Icons.Default.Edit, contentDescription = "Edit Mata Kuliah",
+                    imageVector = Icons.Default.Edit,
+                    contentDescription = "Edit Mata Kuliah",
                 )
             }
         }
-    ){ innerPadding ->
-        val detailUiState by ViewModel.detailUiState.collectAsState()
+    ) { innerPadding ->
         BodyDetailMataKuliah(
             modifier = Modifier.padding(innerPadding),
             detailUiState = detailUiState,
-            onDeleteClick = {
-                ViewModel.deleteMataKuliah()
-                onDeleteClick
-            }
+            onDeleteClick = { ViewModel.deleteMataKuliah() }
         )
     }
 }
@@ -90,22 +102,23 @@ fun BodyDetailMataKuliah(
     modifier: Modifier = Modifier,
     detailUiState: DetailUiState = DetailUiState(),
     onDeleteClick: () -> Unit = { }
-){
+) {
     var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
     when {
         detailUiState.isLoading -> {
             Box(
-                modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center
-            ){
-                CircularProgressIndicator()  // Menampilkan progress indicator
+                modifier = modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
             }
         }
         detailUiState.isEventNotEmpty -> {
-            Column (
+            Column(
                 modifier = modifier.fillMaxWidth().padding(16.dp)
-            ){
+            ) {
                 ItemDetailMk(
-                    mataKuliah =   detailUiState.detailUiEvent.toMataKuliahEntity(),
+                    mataKuliah = detailUiState.detailUiEvent.toMataKuliahEntity(),
                     modifier = Modifier
                 )
                 Spacer(modifier = Modifier.padding(8.dp))
@@ -115,8 +128,8 @@ fun BodyDetailMataKuliah(
                     },
                     modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = colorResource(id = R.color.skyblue), // warna background button
-                        contentColor = colorResource(id = R.color.white)    //   warna teks
+                        containerColor = colorResource(id = R.color.skyblue),
+                        contentColor = colorResource(id = R.color.white)
                     )
                 ) {
                     Text(text = "Delete")
@@ -127,13 +140,13 @@ fun BodyDetailMataKuliah(
                             deleteConfirmationRequired = false
                             onDeleteClick()
                         },
-                        onDeleteCacel = {deleteConfirmationRequired =false},
-                        modifier =  Modifier.padding(8.dp)
+                        onDeleteCacel = { deleteConfirmationRequired = false },
+                        modifier = Modifier.padding(8.dp)
                     )
                 }
             }
         }
-        detailUiState.isEventNotEmpty -> { // Jika data tidak ditemukan
+        else -> {
             Box(
                 modifier = Modifier.fillMaxWidth(),
                 contentAlignment = Alignment.Center
@@ -147,22 +160,23 @@ fun BodyDetailMataKuliah(
     }
 }
 
+
 @Composable
-fun ItemDetailMk(  // Menampilkan detail mata kuliah dalam kartu
-    modifier: Modifier =Modifier,
+fun ItemDetailMk(
+    modifier: Modifier = Modifier,
     mataKuliah: MataKuliah
-){
-    Card ( // Card untuk detail mata kuliah
+) {
+    Card(
         modifier = modifier
             .fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
             contentColor = MaterialTheme.colorScheme.onPrimaryContainer
         )
-    ){
-        Column (
+    ) {
+        Column(
             modifier = Modifier.padding(16.dp)
-        ){
+        ) {
             ComponentDetailMataKuliah(judul = "Kode", isinya = mataKuliah.kode)
             Spacer(modifier = Modifier.padding(4.dp))
             ComponentDetailMataKuliah(judul = "Nama", isinya = mataKuliah.nama)
@@ -180,16 +194,15 @@ fun ItemDetailMk(  // Menampilkan detail mata kuliah dalam kartu
 }
 
 @Composable
-fun ComponentDetailMataKuliah( // Menampilkan satu baris detail mata kuliah
+fun ComponentDetailMataKuliah(
     modifier: Modifier = Modifier,
     judul: String,
     isinya: String,
-){
+) {
     Column(
         modifier = modifier.fillMaxWidth(),
-
         horizontalAlignment = Alignment.Start
-    ){
+    ) {
         Text(
             text = "$judul :",
             fontSize = 20.sp,
@@ -204,11 +217,10 @@ fun ComponentDetailMataKuliah( // Menampilkan satu baris detail mata kuliah
 }
 
 @Composable
-private fun DeleteConfirmationDialog( // konfirmasi hapus data
-    onDeleteConfirm: () -> Unit, onDeleteCacel: () -> Unit, modifier: Modifier =
-        Modifier
+private fun DeleteConfirmationDialog(
+    onDeleteConfirm: () -> Unit, onDeleteCacel: () -> Unit, modifier: Modifier = Modifier
 ) {
-    AlertDialog(onDismissRequest = { /* Do Nothing */},
+    AlertDialog(onDismissRequest = { /* Do Nothing */ },
         title = { Text("Delete Data") },
         text = { Text("Apakah anda yakin ingin menghapus data?") },
         modifier = modifier,

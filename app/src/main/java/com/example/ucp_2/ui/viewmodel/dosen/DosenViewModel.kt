@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.ucp_2.data.entity.Dosen
 import com.example.ucp_2.repository.dosen.LocalRepositoryDsn
 import kotlinx.coroutines.launch
 
@@ -64,8 +65,16 @@ data class DosenEvent(
     val nidn: String = "",
     val nama: String = "",
     val jenisKelamin: String = ""
-)
+) {
 
+}
+fun DosenEvent.toDosenEntity(): Dosen {
+    return Dosen(
+        nidn = this.nidn,
+        nama = this.nama,
+        jenisKelamin = this.jenisKelamin
+    )
+}
 data class DosenUiState(
     val dosenEvent: DosenEvent = DosenEvent(),
     val isEntryValid: FormErrorState = FormErrorState(),

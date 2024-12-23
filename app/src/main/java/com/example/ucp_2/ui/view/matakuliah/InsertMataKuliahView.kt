@@ -11,8 +11,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Button
@@ -69,8 +71,6 @@ fun InsertMKView(
     val snackbarHostState = remember{ SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
 
-    //Observasi perubahan snackbarMessage
-
     LaunchedEffect(uiState.snackBarMessage) {
         uiState.snackBarMessage?.let { message ->
             coroutineScope.launch {
@@ -80,24 +80,24 @@ fun InsertMKView(
         }
     }
 
-    Scaffold (
-        modifier = modifier,
+    Scaffold(
+        topBar = {
+            CustomTopAppBar(
+                judul = "Tambah Mata Kuliah",
+                showBackButton = true,
+                onBack = onBack,
+                modifier = modifier
+            )
+        },
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) { padding ->
-        Column (
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(padding)
-                .padding(16.dp)
-        ){
-
-            CustomTopAppBar(
-                onBack = onBack,
-                showBackButton = true,
-                judul = "Tambah Mata Kuliah"
-            )
-
-            //Isi Body
+                .padding(padding)  // Hanya menggunakan padding yang diberikan oleh Scaffold
+                .padding(horizontal = 16.dp)
+        ) {
+            // Isi Body
             InsertBodyMataKuliah(
                 uiState = uiState,
                 dosenList = uiState.dosentList,  // Pastikan ini ada
@@ -111,7 +111,6 @@ fun InsertMKView(
                     onNavigate()
                 }
             )
-
         }
     }
 }
@@ -125,7 +124,8 @@ fun InsertBodyMataKuliah(
     dosenList: List<Dosen>
 ){
     Column(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -148,7 +148,6 @@ fun InsertBodyMataKuliah(
         }
     }
 }
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -210,7 +209,7 @@ fun FormMataKuliah(
         }
         Text(text = errorState.semester ?: "", color = Color.Red)
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(15.dp))
 
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
