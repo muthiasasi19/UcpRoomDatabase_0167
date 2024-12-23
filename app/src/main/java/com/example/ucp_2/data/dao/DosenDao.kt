@@ -6,20 +6,16 @@ import androidx.room.Query
 import com.example.ucp_2.data.entity.Dosen
 import kotlinx.coroutines.flow.Flow
 
+
 @Dao
 interface DosenDao {
-    //insert
     @Insert
-    suspend fun  insertDosen(dosen: Dosen)
+    suspend fun insertDosen(dosen: Dosen)
 
-    //read nya belooommmm-------------------------------
+    @Query("SELECT * FROM dosen")
+    fun getAllDosen(): Flow<List<Dosen>>
 
-    // Untuk mengambil semua data dosen yang tersimpan
-    @Query("SELECT * FROM dosen ORDER BY nama ASC")
-    fun getAllDosen() : Flow<List<Dosen>>
-
-    // untuk mengambil data dosen bedasarkan nidn
     @Query("SELECT * FROM dosen WHERE nidn = :nidn")
-    fun getDosen(nidn : String) : Flow<Dosen>
+    fun getDosen(nidn: String): Flow<Dosen>
 
 }
