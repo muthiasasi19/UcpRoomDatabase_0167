@@ -90,5 +90,92 @@ fun HomeMKView(
     }
 }
 
+@Composable
+fun BodyHomeMataKuliahView(
+    homeMataKuliahUiState: HomeUiState,
+    onClick: (String) -> Unit,
+    modifier: Modifier = Modifier,
+){
+    val coroutineScope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() } // snacbarState
+    when {
+        homeMataKuliahUiState.isLoading -> {
+            // Menampilkan indikator loading
+            Box(
+                modifier = modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ){
+                CircularProgressIndicator()
+            }
+        }
+        homeMataKuliahUiState.isError -> {
+            //Menampilkan pesan error
+            LaunchedEffect(homeMataKuliahUiState.errorMessage) {
+                homeMataKuliahUiState.errorMessage?.let { message ->
+                    coroutineScope.launch {
+                        snackbarHostState.showSnackbar(message) // Tampilkan snackbar
+                    }
+                }
+            }
+        }
+        homeMataKuliahUiState.listMataKuliah.isEmpty() -> {
+            //Menampilkan pesan jika data kosong
+            Box(
+                modifier = modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ){
+                Text(
+                    text = "Tidak ada data Mata kuliah",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
+        }
+        else -> {Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(900.dp)
+                .padding(top = 110.dp)
+                .background(
+                    color = colorResource(id = R.color.skyblue),
+                    shape = RoundedCornerShape(topStart = 25.dp, topEnd = 0.dp) // Rounded hanya di kiri atas
+                )
+        )
+            //Menampilkan daftar Matakuliah
+            ListMataKuliah(
+                listMk = homeMataKuliahUiState.listMataKuliah,
+                onClick = {
+                    onClick(it)
+                    println(it)
+                },
+                modifier = modifier
+            )
+        }
+    }
+}
+
+@Composable
+fun ListMataKuliah(
+    listMk: List<MataKuliah>,
+    modifier: Modifier = Modifier,
+    onClick: (String) -> Unit = { }
+) {
+    LazyColumn(
+        modifier = modifier
+    ) {
+        items(
+            items = listMk,
+            itemContent = { mk ->
+                CardMk(
+                    mk = mk,
+                    onClick = {
+                        onClick(mk.kode)
+                    }
+                )
+            }
+        )
+    }
+}
 
 }
