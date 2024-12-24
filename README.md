@@ -63,3 +63,6 @@ Tabel matakuliah
 
 ![Cuplikan layar 2024-12-24 035756](https://github.com/user-attachments/assets/d40abb2e-98ee-4cb6-837d-7b42ed667646)
 
+
+
+https://drive.google.com/file/d/1jxUw_aq6CFckiGCGYYJTzPSK9RQZyv9l/view?usp=sharing
